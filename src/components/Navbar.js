@@ -10,7 +10,8 @@ const NavWrapper = styled.div`
   color: white;
   height: 50px;
   width: 100%;
-
+  position: fixed;
+  z-index: 10;
   .inputWrapper {
     border: 3px solid teal;
     border-radius: 5px;

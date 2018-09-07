@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import MoviePage from './MoviePage';
 import { IoMdStar as IconStar } from 'react-icons/io';
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  padding-top: 50px;
 `;
 
 const MovieWrapper = styled.div`
@@ -20,6 +22,14 @@ const MovieWrapper = styled.div`
   overflow: hidden;
   background-color: hsl(0, 0%, 12%);
   cursor: pointer;
+  position: relative;
+
+  .click-area {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+  }
 
   .img-wrapper {
     width: 100%;
@@ -64,7 +74,9 @@ const MovieWrapper = styled.div`
 class MovieList extends Component {
   state = {
     list: [],
-    posterPath: 'https://image.tmdb.org/t/p/w200'
+    posterPath: 'https://image.tmdb.org/t/p/w200',
+    movieSelected: false,
+    movieId: 0
   };
 
   componentDidMount() {
@@ -75,25 +87,41 @@ class MovieList extends Component {
       .then(resp => resp.json())
       .then(data => {
         this.setState({ list: data.results });
-        console.log(data);
       });
   }
 
   handleChooseMovie = e => {
-    e.persist();
-    console.log(e);
+    const movieId = e.target.dataset.id;
+
+    this.setState((preState, props) => ({
+      movieSelected: !preState.movieSelected,
+      movieId
+    }));
+  };
+
+  handleCloseModal = e => {
+    this.setState({ movieSelected: false });
   };
 
   render() {
-    const { list, posterPath } = this.state;
+    const { list, posterPath, movieSelected, movieId } = this.state;
     return (
       <Container>
+        {movieSelected && (
+          <MoviePage
+            movie={movieId}
+            mediaPath={posterPath}
+            close={this.handleCloseModal}
+          />
+        )}
+
         {list.map((movie, key) => (
           <MovieWrapper
             key={key}
             data-id="hello there"
             onClick={this.handleChooseMovie}
           >
+            <div className="click-area" data-id={movie.id} />
             <div className="img-wrapper">
               <img src={posterPath + movie.poster_path} alt="" />
               <div className="description">
