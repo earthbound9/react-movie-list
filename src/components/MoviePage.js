@@ -41,7 +41,7 @@ class MoviePage extends Component {
   }
   render() {
     if (this.state.movie) {
-      const { title, poster_path, backdrop_path } = this.state.movie;
+      const { title, poster_path } = this.state.movie;
       const { close, mediaPath } = this.props;
       return (
         <MoviePageWrapper onClick={close}>

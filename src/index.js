@@ -6,6 +6,7 @@ import { injectGlobal } from 'styled-components';
 injectGlobal`
   * {
     margin: 0;
+    -webkit-font-smoothing: antialiased;
   }
 
   body {

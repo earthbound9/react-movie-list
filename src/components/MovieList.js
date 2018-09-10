@@ -12,14 +12,9 @@ const Container = styled.div`
 
 const MovieWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 250px;
+  width: 500px;
   height: 400px;
   margin: 2rem;
-  border: 1px solid #63dbe6;
-  border-radius: 0.8%;
-  overflow: hidden;
   background-color: hsl(0, 0%, 12%);
   cursor: pointer;
   position: relative;
@@ -31,50 +26,73 @@ const MovieWrapper = styled.div`
     z-index: 5;
   }
 
-  .img-wrapper {
-    width: 100%;
-    height: 85%;
-    position: relative;
-  }
-
   img {
     width: 100%;
     height: 100%;
   }
 
   .description {
-    position: absolute;
-    top: 0px;
     padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+    background-color: #706d6d99;
+    padding: 10px 0;
+
+    &_top {
+      width: 100%;
+
+      &_title {
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      & h4 {
+        margin-bottom: 10px;
+      }
+
+      &_overview {
+        background-color: #333;
+        padding: 5px 10px;
+      }
+    }
+  }
+
+  .title {
+    font-size: 0.9rem;
+  }
+
+  .overview {
+    padding: 0 10px;
+    line-height: 1.25;
+    align-self: flex-start;
+  }
+
+  .stats {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    background-color: #333;
-  }
 
-  .rating {
-    display: flex;
-    align-items: center;
+    &_rating {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .icon-star {
     font-size: 20px;
     color: yellow;
-    margin-left: 4px;
-  }
-
-  .title {
-    text-align: center;
-    font-size: 0.9rem;
-    margin: auto;
+    margin-left: 10px;
   }
 `;
 
 class MovieList extends Component {
   state = {
     list: [],
-    posterPath: 'https://image.tmdb.org/t/p/w200',
+    posterPath: 'https://image.tmdb.org/t/p/w300',
     movieSelected: false,
     movieId: 0
   };
@@ -87,6 +105,7 @@ class MovieList extends Component {
       .then(resp => resp.json())
       .then(data => {
         this.setState({ list: data.results });
+        console.log(data);
       });
   }
 
@@ -124,16 +143,26 @@ class MovieList extends Component {
             <div className="click-area" data-id={movie.id} />
             <div className="img-wrapper">
               <img src={posterPath + movie.poster_path} alt="" />
-              <div className="description">
-                <h5>{movie.release_date}</h5>
-                <div className="rating">
-                  {movie.vote_average} <IconStar className="icon-star" />
+            </div>
+            <div className="description">
+              <div className="description_top">
+                <h3 className="description_top_title">{movie.title}</h3>
+
+                <div className="description_top_overview">
+                  <h4>Description</h4>
+                  {movie.overview.length > 100
+                    ? movie.overview.slice(0, 150) + ' ...'
+                    : movie.overview}
                 </div>
               </div>
-            </div>
+              <div className="stats">
+                <h5>{movie.release_date}</h5>
 
-            <div className="title">
-              <h3>{movie.title}</h3>
+                <div className="stats_rating">
+                  <IconStar className="icon-star" /> {movie.vote_average}
+                  /10
+                </div>
+              </div>
             </div>
           </MovieWrapper>
         ))}
