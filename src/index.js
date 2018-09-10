@@ -12,6 +12,7 @@ injectGlobal`
   body {
     background-color: #333;
     color: white;
+    font-family: 'Montserrat', sans-serif;
   }
 `;
 

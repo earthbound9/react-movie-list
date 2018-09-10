@@ -45,8 +45,12 @@ const MovieWrapper = styled.div`
       width: 100%;
 
       &_title {
+        font-family: 'Raleway', sans-serif;
         margin-bottom: 15px;
+        padding: 0 5px;
         text-align: center;
+        line-height: 1.25;
+        font-weight: 700;
       }
 
       & h4 {
@@ -150,8 +154,8 @@ class MovieList extends Component {
 
                 <div className="description_top_overview">
                   <h4>Description</h4>
-                  {movie.overview.length > 100
-                    ? movie.overview.slice(0, 150) + ' ...'
+                  {movie.overview.length > 200
+                    ? movie.overview.slice(0, 200) + ' ...'
                     : movie.overview}
                 </div>
               </div>
